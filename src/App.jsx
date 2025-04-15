@@ -20,12 +20,20 @@ function App() {
         produkcja={produkcja} 
         czasRealizacji={czasRealizacji} 
         tableTitle={"Urządzenie"}
+        czas={3}
+        wielkosc={40}
+        poziom={1}
+        stan={22}
         setZamowienia={setZamowieniaPierwszejTabeli}
       />
       <MrpTable 
         produkcja={zamowieniaPierwszejTabeli} 
         czasRealizacji={0} 
         tableTitle={"Silnik"}
+        czas={1}
+        wielkosc={50}
+        poziom={2}
+        stan={10}
       />
     </div>
   );

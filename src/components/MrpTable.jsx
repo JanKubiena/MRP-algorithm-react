@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 
 const tygodnie = Array.from({ length: 10 }, (_, i) => i + 1);
 
-function MrpTable({ produkcja, czasRealizacji, tableTitle, setZamowienia}) {
-  const [mrpCzasRealizacji, setmrpCzasRealizacji] = useState(3);
-  const [wielkoscPartii, setWielkoscPartii] = useState(40);
-  const [poziomBOM, setPoziomBOM] = useState(1);
-  const [naStanie, setNaStanie] = useState(22);
+function MrpTable({ produkcja, czasRealizacji, tableTitle, czas, wielkosc, poziom, stan,setZamowienia}) {
+  const [mrpCzasRealizacji, setmrpCzasRealizacji] = useState(czas);
+  const [wielkoscPartii, setWielkoscPartii] = useState(wielkosc);
+  const [poziomBOM, setPoziomBOM] = useState(poziom);
+  const [naStanie, setNaStanie] = useState(stan);
   const [zapotrzebowanie, setZapotrzebowanie] = useState(Array(10).fill(0));
   const [planowanePrzyjecia, setPlanowanePrzyjecia] = useState(Array(10).fill(0));
   const [przewidywaneNaStanie, setPrzewidywaneNaStanie] = useState(Array(10).fill(0));
