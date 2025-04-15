@@ -19,21 +19,33 @@ function App() {
       <MrpTable 
         produkcja={produkcja} 
         czasRealizacji={czasRealizacji} 
-        tableTitle={"Urządzenie"}
+        tableTitle={"Blaty"}
         czas={3}
         wielkosc={40}
         poziom={1}
         stan={22}
+        ilosc={1}
         setZamowienia={setZamowieniaPierwszejTabeli}
       />
       <MrpTable 
         produkcja={zamowieniaPierwszejTabeli} 
         czasRealizacji={0} 
-        tableTitle={"Silnik"}
+        tableTitle={"Płyta pilśniowa"}
         czas={1}
         wielkosc={50}
         poziom={2}
         stan={10}
+        ilosc={1}
+      />
+      <MrpTable 
+        produkcja={produkcja} 
+        czasRealizacji={czasRealizacji} 
+        tableTitle={"Nogi"}
+        czas={2}
+        wielkosc={120}
+        poziom={1}
+        stan={40}
+        ilosc={4}
       />
     </div>
   );
