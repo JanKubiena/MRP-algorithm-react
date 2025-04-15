@@ -45,18 +45,23 @@ function MrpTable({ produkcja, czasRealizacji, tableTitle, czas, wielkosc, pozio
                 } else {
                     if(nowePrzewidywaneNaStanie[i-1] - noweZapotrzebowanie[i] + planowanePrzyjecia[i] < 0) {
                         noweNetto[i] = Math.abs(nowePrzewidywaneNaStanie[i-1] - noweZapotrzebowanie[i] + planowanePrzyjecia[i]);
-                        nowePrzyjecieZamowien[i] = wielkoscPartii
+                        if (i < mrpCzasRealizacji) {
+                            nowePrzyjecieZamowien[mrpCzasRealizacji] = wielkoscPartii
+                        } else {
+                            nowePrzyjecieZamowien[i] = wielkoscPartii
+                        }
                         noweNaStanie = nowePrzyjecieZamowien[i] - noweNetto[i];
                     } else {
                         noweNaStanie = nowePrzewidywaneNaStanie[i-1] - noweZapotrzebowanie[i] + planowanePrzyjecia[i];
                     }
                 nowePrzewidywaneNaStanie[i] = noweNaStanie
                 }
-            } else if (noweNaStanie < 0) {
-                noweNetto[i] = Math.abs(noweNaStanie - noweZapotrzebowanie[i] + planowanePrzyjecia[i]);
+            } else if (noweNaStanie < 0 && noweNetto[i] === 0) {
+                noweNetto[i] = Math.abs(noweNaStanie);
                 nowePrzyjecieZamowien[i] = wielkoscPartii
-                noweNaStanie = nowePrzyjecieZamowien[i] - noweNetto[i] + planowanePrzyjecia[i];
+                noweNaStanie = noweNaStanie + planowanePrzyjecia[i] + nowePrzyjecieZamowien[i];               
                 nowePrzewidywaneNaStanie[i] = noweNaStanie;
+                
             } else {                    
                 noweNaStanie = noweNaStanie + planowanePrzyjecia[i] + nowePrzyjecieZamowien[i];               
                 nowePrzewidywaneNaStanie[i] = noweNaStanie;

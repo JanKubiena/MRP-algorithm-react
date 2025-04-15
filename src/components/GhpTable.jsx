@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 const tygodnie = Array.from({ length: 10 }, (_, i) => i + 1);
 
 function GhpTable({ produkcja, setProdukcja, czasRealizacji, setCzasRealizacji }) {
-  const [naStanie, setNaStanie] = useState(2);
+  const [naStanie, setNaStanie] = useState(5);
   const [popyt, setPopyt] = useState(Array(10).fill(0));
   const [dostepne, setDostepne] = useState(Array(10).fill(0));
 
