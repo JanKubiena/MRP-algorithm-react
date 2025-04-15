@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const tygodnie = Array.from({ length: 10 }, (_, i) => i + 1);
 
-function MrpTable({ produkcja, czasRealizacji, tableTitle}) {
+function MrpTable({ produkcja, czasRealizacji, tableTitle, setZamowienia}) {
   const [mrpCzasRealizacji, setmrpCzasRealizacji] = useState(3);
   const [wielkoscPartii, setWielkoscPartii] = useState(40);
   const [poziomBOM, setPoziomBOM] = useState(1);
@@ -11,7 +11,7 @@ function MrpTable({ produkcja, czasRealizacji, tableTitle}) {
   const [planowanePrzyjecia, setPlanowanePrzyjecia] = useState(Array(10).fill(0));
   const [przewidywaneNaStanie, setPrzewidywaneNaStanie] = useState(Array(10).fill(0));
   const [netto, setNetto] = useState(Array(10).fill(0));
-  const [zamowienia, setZamowienia] = useState(Array(10).fill(0));
+  const [zamowienia, setZamowieniaLokalne] = useState(Array(10).fill(0));
   const [przyjecieZamowien, setPrzyjecieZamowien] = useState(Array(10).fill(0));
 
     useEffect(() => {
@@ -21,10 +21,6 @@ function MrpTable({ produkcja, czasRealizacji, tableTitle}) {
             noweZapotrzebowanie[i] += produkcja[i + czasRealizacji] || 0;
         }
 
-        setZapotrzebowanie(noweZapotrzebowanie);
-    }, [produkcja, czasRealizacji]);
-
-    useEffect(() => {
         let noweNaStanie = naStanie
 
         const nowePrzewidywaneNaStanie = Array(10).fill(0);
@@ -33,13 +29,13 @@ function MrpTable({ produkcja, czasRealizacji, tableTitle}) {
         const nowePrzyjecieZamowien = Array(10).fill(0);
 
         for (let i = 0; i < 10; i++) {
-            if (zapotrzebowanie[i] !== 0){
-                if(przewidywaneNaStanie[i-1] - zapotrzebowanie[i] + planowanePrzyjecia[i] < 0) {
-                    noweNetto[i] = Math.abs(przewidywaneNaStanie[i-1] - zapotrzebowanie[i] + planowanePrzyjecia[i]);
+            if (noweZapotrzebowanie[i] !== 0){
+                if(nowePrzewidywaneNaStanie[i-1] - noweZapotrzebowanie[i] + planowanePrzyjecia[i] < 0) {
+                    noweNetto[i] = Math.abs(nowePrzewidywaneNaStanie[i-1] - noweZapotrzebowanie[i] + planowanePrzyjecia[i]);
                     nowePrzyjecieZamowien[i] = wielkoscPartii
                     noweNaStanie = nowePrzyjecieZamowien[i] - noweNetto[i];
                 } else {
-                    noweNaStanie = przewidywaneNaStanie[i-1] - zapotrzebowanie[i] + planowanePrzyjecia[i];
+                    noweNaStanie = nowePrzewidywaneNaStanie[i-1] - noweZapotrzebowanie[i] + planowanePrzyjecia[i];
                 }
                 nowePrzewidywaneNaStanie[i] = noweNaStanie
             } else {
@@ -53,12 +49,18 @@ function MrpTable({ produkcja, czasRealizacji, tableTitle}) {
         for (let i = 0; i < 10; i++) {
             noweZamowienia[i] += nowePrzyjecieZamowien[i + mrpCzasRealizacji] || 0;
         }
+
+        setZapotrzebowanie(noweZapotrzebowanie);
         setPrzewidywaneNaStanie(nowePrzewidywaneNaStanie);
         setNetto(noweNetto);
-        setZamowienia(noweZamowienia);
+        setZamowieniaLokalne(noweZamowienia);
         setPrzyjecieZamowien(nowePrzyjecieZamowien);
 
-    }, [mrpCzasRealizacji, wielkoscPartii, poziomBOM, naStanie, zapotrzebowanie, planowanePrzyjecia, przewidywaneNaStanie, netto, zamowienia, przyjecieZamowien]);
+        if (setZamowienia) {
+            setZamowienia(noweZamowienia);
+          }
+
+    }, [mrpCzasRealizacji, wielkoscPartii, naStanie, produkcja, czasRealizacji, planowanePrzyjecia, setZamowienia]);
 
   const handleChange = (setter, index, value) => {
     setter((prev) => {
